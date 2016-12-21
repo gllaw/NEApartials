@@ -46,11 +46,9 @@
         	};
         	factory.create = function(newUser) {
             	users.push(newUser);
-            	// callback(users); callback was a param too... don't need?
         	}
         	factory.delete = function(id){
         		users.splice(id, 1);
-            	// callback(users); callback was a param too... don't need?
         	}
 
 			return factory;
@@ -59,7 +57,6 @@
 		app.controller('CustomizeUsersController', ["$scope", "userFactory", function ($scope, userFactory){
 	        $scope.user = {};
 			$scope.users = [];
-        	// $scope.index();		IDK what this is about...
 
       		$scope.index = function(){
            		userFactory.index(data);
@@ -70,7 +67,7 @@
 	            $scope.user = {};
 	        }
 	        userFactory.index(setUsers);
-//---------------above was just to get the data to show on the page...omg--------
+//---------------above was just to get the data to show on the page.-------------
 
         	$scope.create=function(){
         		userFactory.create($scope.newUser);
