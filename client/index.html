@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+	<meta charset="UTF-8">
+	<title>Sample Partials and Routes Video</title>
+	<script src="bower_components/angular/angular.js" charset="utf-8"></script>
+	<script src="bower_components/angular-route/angular-route.js" charset="utf-8"></script>
+	<script> 
+		var app = angular.module("myApp", ["ngRoute"]);
+		app.config(function($routeProvider){
+			$routeProvider
+				.when("/",{
+					templateUrl: "partials/customizeUsers.html"
+				})
+				.when("/list", {
+					templateUrl: "partials/userList.html"
+				})
+				.otherwise({
+					redirectTo: "/"
+				});
+		});
+
+		app.factory("userFactory", function(){
+			var factory = {};
+
+			var users=[
+			{
+				fname: "Yukihiro",
+				lname: "Matsumoto",
+				lang: "Ruby"
+			},
+			{
+				fname: "Ryan",
+				lname: "Dohl",
+				lang: "JavaScript"
+			},
+			{
+				fname: "Brendan",
+				lname: "Eich",
+				lang: "JavaScript"
+			}
+			];
+
+			factory.index = function(callback) {
+            	callback(users);
+        	};
+        	factory.create = function(newUser) {
+            	users.push(newUser);
+            	// callback(users); callback was a param too... don't need?
+        	}
+        	factory.delete = function(id){
+        		users.splice(id, 1);
+            	// callback(users); callback was a param too... don't need?
+        	}
+
+			return factory;
+		});
+//--------------------------------------------------------------------------------		
+		app.controller('CustomizeUsersController', ["$scope", "userFactory", function ($scope, userFactory){
+	        $scope.user = {};
+			$scope.users = [];
+        	// $scope.index();		IDK what this is about...
+
+      		$scope.index = function(){
+           		userFactory.index(data);
+        	}
+
+      		function setUsers(data) {
+	            $scope.users = data;
+	            $scope.user = {};
+	        }
+	        userFactory.index(setUsers);
+//---------------above was just to get the data to show on the page...omg--------
+
+        	$scope.create=function(){
+        		userFactory.create($scope.newUser);
+        		$scope.newUser={};	//reset form
+        	} 
+
+        	$scope.delete=function($index){
+        		userFactory.delete($index);
+        	}
+    	}]);
+//--------------------------------------------------------------------------------
+    	app.controller('UserListsController', ["$scope", "userFactory", function ($scope, userFactory){
+      		function setUsers(data) {
+	            $scope.users = data;
+	        }
+
+	        $scope.users = [];
+
+      		//When this controller is loaded, fetch the user list
+   			userFactory.index(setUsers);
+    	}]);
+	</script>
+</head>
+<body ng-app="myApp">
+	<div ng-view>
+		<!--Partials will load here.-->
+	</div>
+	<a href="#/">Customize Users</a>
+	<a href="#/list">User List</a>
+</body>
+</html>

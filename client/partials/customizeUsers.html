@@ -1,0 +1,25 @@
+<div ng-controller="CustomizeUsersController"> 
+<fieldset>
+	<legend>Users Controller</legend>
+	<form ng-submit="create()">
+		<p>First Name <input type="text" ng-model="newUser.fname">
+		<p>Last Name <input type="text" ng-model="newUser.lname">
+		<p>Favorite Language <input type="text" ng-model="newUser.lang">
+		<p><input type="submit" value="Create User">
+ 	</form>
+ 	<table>
+	 	<tr>
+	 		<th>First Name</th>
+	 		<th>Last Name</th>
+	 		<th>Fav Language</th>
+	 		<th>Actions</th>
+	 	</tr>
+	 	<tr ng-repeat="user in users">
+	 		<td>{{user.fname}}</td>
+	 		<td>{{user.lname}}</td>
+	 		<td>{{user.lang}}</td>
+	 		<td><button ng-click="delete($index)">Delete User</td>
+	 	</tr>
+ 	</table>
+</fieldset>
+</div>
